@@ -11,16 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class Session {
 
-    @Autowired
     private User user;
-
     private Submission submission;
 
     @Autowired
     private Menu menu;
 
     public Session() {
-        this.submission =  new Forum(1, "Frontpage", "This is the main page of SpeakEasy.");
+        this.user = new User("Anon", "logged-out");
     }
 
     public User getUser() {

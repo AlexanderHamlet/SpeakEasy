@@ -4,8 +4,8 @@ public class Comment extends Submission {
 
     private String body;
 
-    public Comment(String body) {
-        super();
+    public Comment(int parentId, int posterId, String body) {
+        super(parentId, posterId);
         this.body = body;
     }
 

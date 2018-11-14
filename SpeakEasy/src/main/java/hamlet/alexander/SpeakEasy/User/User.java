@@ -3,23 +3,23 @@ package hamlet.alexander.SpeakEasy.User;
 import java.util.ArrayList;
 import java.util.List;
 
-import hamlet.alexander.SpeakEasy.Submission.Submission;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import org.springframework.stereotype.Component;
-
-@Component
+@Document(collection = "user")
 public class User {
 
+    @Id
     private int id;
+
     private String userName;
     private String role;
-    private List<Submission> submissions;
+    private List<Integer> submissions;
 
-    public User() {
-        this.id = -1;
-        this.userName = "User";
-        this.role = "logged-out";
-        this.submissions = new ArrayList<Submission>();
+    public User(String userName, String role) {
+        this.userName = userName;
+        this.role = role;
+        this.submissions = new ArrayList<Integer>();
     }
 
     public int getId() {
@@ -46,11 +46,11 @@ public class User {
         this.role = role;
     }
 
-    public List<Submission> getSubmissions() {
+    public List<Integer> getSubmissions() {
         return submissions;
     }
 
-    public void setSubmissions(List<Submission> submissions) {
+    public void setSubmissions(List<Integer> submissions) {
         this.submissions = submissions;
     }
 }

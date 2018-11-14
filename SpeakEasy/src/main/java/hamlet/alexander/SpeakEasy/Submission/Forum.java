@@ -7,7 +7,7 @@ public class Forum extends Submission {
     private String description;
 
     public Forum(int moderatorId, String title, String description) {
-        super();
+        super(0, moderatorId);
         this.moderatorId = moderatorId;
         this.title = title;
         this.description = description;

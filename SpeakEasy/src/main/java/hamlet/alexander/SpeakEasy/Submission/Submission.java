@@ -1,20 +1,25 @@
 package hamlet.alexander.SpeakEasy.Submission;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Document(collection = "submission")
 public abstract class Submission {
 
+    @Id
     private int id;
+
     private int parentId;
     private int posterId;
-    private List<Submission> childrenIds;
+    private List<Integer> childrenIds;
 
-    Submission() {
-        this.id = -1;
-        this.parentId = -1;
-        this.posterId = -1;
-        this.childrenIds = new ArrayList<Submission>();
+    Submission(int parentId, int posterId) {
+        this.parentId = parentId;
+        this.posterId = posterId;
+        this.childrenIds = new ArrayList<Integer>();
     }
 
     public int getId() {
@@ -33,11 +38,11 @@ public abstract class Submission {
         return posterId;
     }
 
-    public List<Submission> getChildren() {
+    public List<Integer> getChildren() {
         return childrenIds;
     }
 
-    public void addChild(Submission child) {
+    public void addChild(int child) {
         this.childrenIds.add(child);
     }
 

@@ -5,8 +5,8 @@ public class Post extends Submission {
     private String title;
     private String body;
 
-    public Post(String title, String body) {
-        super();
+    public Post(int parentId, int posterId, String title, String body) {
+        super(parentId, posterId);
         this.title = title;
         this.body = body;
     }
