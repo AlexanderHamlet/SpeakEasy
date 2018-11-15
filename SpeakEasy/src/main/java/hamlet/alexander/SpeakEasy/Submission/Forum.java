@@ -1,33 +1,35 @@
 package hamlet.alexander.SpeakEasy.Submission;
 
+import org.bson.types.ObjectId;
+
 public class Forum extends Submission {
 
-    private int moderatorId;
-    private String title;
+    private ObjectId moderatorId;
+    private String forumTitle;
     private String description;
 
-    public Forum(int moderatorId, String title, String description) {
-        super(0, moderatorId);
+    public Forum(ObjectId parentId, ObjectId moderatorId, String forumTitle, String description) {
+        super(parentId, moderatorId);
         this.moderatorId = moderatorId;
-        this.title = title;
+        this.forumTitle = forumTitle;
         this.description = description;
     }
 
-    public int getModeratorId() {
+    public ObjectId getModeratorId() {
         return moderatorId;
     }
 
-    public void setModeratorId(int moderatorId) {
+    public void setModeratorId(ObjectId moderatorId) {
         this.moderatorId = moderatorId;
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return forumTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.forumTitle = title;
     }
 
     @Override

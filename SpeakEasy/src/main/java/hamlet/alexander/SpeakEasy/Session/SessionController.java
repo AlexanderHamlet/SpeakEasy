@@ -1,15 +1,15 @@
 package hamlet.alexander.SpeakEasy.Session;
 
 import hamlet.alexander.SpeakEasy.Submission.*;
+import hamlet.alexander.SpeakEasy.User.User;
 import hamlet.alexander.SpeakEasy.User.UserRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SessionController {
@@ -23,90 +23,91 @@ public class SessionController {
     @Autowired
     private SubmissionRepository submissionRepository;
 
-    @GetMapping("/")
-    public String home(Model model) {
+    /*@GetMapping(value = "/")
+    public String speakEasy(Model model) {
+        User admin = new User("admin", "password", "admin");
+        userRepository.save(admin);
+        Forum SE = new Forum(new ObjectId(), userRepository.findByUserName("admin").getId(), "SpeakEasy", "Welcome to the frontpage of SpeakEasy! SpeakEasy is a place to share and discuss ideas with others of likeminded interest. Please be civil.");
+        submissionRepository.save(SE);
+        session.setUser(userRepository.findByUserName("admin"));
+        session.setSubmission(submissionRepository.findByForumTitle("SpeakEasy"));
+        model.addAttribute("title", session.getSubmission().getTitle());
+        model.addAttribute("description", session.getSubmission().getBody());
+        model.addAttribute("user", session.getUser().getUserName());
+        model.addAttribute("children", submissionRepository.findByParentId(session.getSubmission().getId()));
+        return "home";
+    }*/
 
-        List<Submission> children = new ArrayList<Submission>();
-        session.setSubmission(submissionRepository.findByTitle("SpeakEasy"));
+    @GetMapping(value = "/{forum}")
+    public String forum(@PathVariable String forum, Model model) {
+        session.setSubmission(submissionRepository.findByForumTitle(forum));
 
-        for(int childId : session.getSubmission().getChildren()) {
-            children.add(submissionRepository.findById(childId));
+        model.addAttribute("title", session.getSubmission().getTitle());
+        model.addAttribute("description", session.getSubmission().getBody());
+        model.addAttribute("user", session.getUser().getUserName());
+        model.addAttribute("children", submissionRepository.findByParentId(session.getSubmission().getId()));
+        return "home";
+    }
+
+    @GetMapping(value = "/{forum}/{post}")
+    public String post(@PathVariable String forum, @PathVariable String post, Model model) {
+        if(submissionRepository.findByForumTitle(forum).getTitle().equals(submissionRepository.findById(submissionRepository.findByPostTitle(post).getParentId()).getTitle())) {
+            session.setSubmission(submissionRepository.findByPostTitle(post));
+            model.addAttribute("title", session.getSubmission().getTitle());
+            model.addAttribute("description", session.getSubmission().getBody());
+            model.addAttribute("user", session.getUser().getUserName());
+            model.addAttribute("children", submissionRepository.findByParentId(session.getSubmission().getId()));
+            return "home";
+        } else {
+            return "404";
+        }
+    }
+
+    @PostMapping(value = "/login")
+    public String login(@RequestParam Map<String, String> credentials, Model model) {
+        User user = userRepository.findByUserName(credentials.get("username"));
+        if(user != null && user.getPassword().equals(credentials.get("password"))) {
+            session.setUser(user);
         }
 
         model.addAttribute("title", session.getSubmission().getTitle());
         model.addAttribute("description", session.getSubmission().getBody());
         model.addAttribute("user", session.getUser().getUserName());
-        model.addAttribute("children", children);
+        model.addAttribute("children", submissionRepository.findByParentId(session.getSubmission().getId()));
         return "home";
     }
 
-//    @GetMapping("/forum1")
-//    public String forumOne(Model model) {
-//        Submission forum1 = new Forum(1, "FORUM 1", "This is the description of Forum 1");
-//        session.getSubmission().addChild(forum1);
-//
-//        session.setSubmission(session.getSubmission().getChildren().get(0));
-//
-//        Submission post1 = new Post("Post 1", "This is the body of Post 1");
-//        Submission post2 = new Post("Post 2", "This is the body of Post 2");
-//        session.getSubmission().addChild(post1);
-//        session.getSubmission().addChild(post2);
-//
-//        String submissionTitle = session.getSubmission().getTitle();
-//        List<HashMap<String, String>> submissionChildren = new ArrayList<HashMap<String, String>>();
-//        HashMap<String, String> hash1 = new HashMap<String, String>();
-//        hash1.put("title", session.getSubmission().getChildren().get(0).getTitle());
-//        hash1.put("body", session.getSubmission().getChildren().get(0).getBody());
-//        HashMap<String, String> hash2 = new HashMap<String, String>();
-//        hash2.put("title", session.getSubmission().getChildren().get(1).getTitle());
-//        hash2.put("body", session.getSubmission().getChildren().get(1).getBody());
-//        submissionChildren.add(hash1);
-//        submissionChildren.add(hash2);
-//        String userName = session.getUser().getUserName();
-//
-//        model.addAttribute("title", submissionTitle);
-//        model.addAttribute("user", userName);
-//        model.addAttribute("children", submissionChildren);
-//
-//        return "home";
-//    }
-//
-//    @GetMapping("/forum1/post1")
-//    public String postOne(Model model) {
-//        Submission forum1 = new Forum(1, "FORUM 1", "This is the description of Forum 1");
-//        session.getSubmission().addChild(forum1);
-//
-//        session.setSubmission(session.getSubmission().getChildren().get(0));
-//
-//        Submission post1 = new Post("Post 1", "This is the body of Post 1");
-//        Submission post2 = new Post("Post 2", "This is the body of Post 2");
-//        session.getSubmission().addChild(post1);
-//        session.getSubmission().addChild(post2);
-//
-//        session.setSubmission(session.getSubmission().getChildren().get(0));
-//
-//        Submission comment1 = new Comment("This is the first comment.");
-//        Submission comment2 = new Comment("This is the second comment.");
-//        session.getSubmission().addChild(comment1);
-//        session.getSubmission().addChild(comment2);
-//
-//        String submissionTitle = session.getSubmission().getTitle();
-//        List<HashMap<String, String>> submissionChildren = new ArrayList<HashMap<String, String>>();
-//        HashMap<String, String> hash1 = new HashMap<String, String>();
-//        hash1.put("title", session.getSubmission().getChildren().get(0).getTitle());
-//        hash1.put("body", session.getSubmission().getChildren().get(0).getBody());
-//        HashMap<String, String> hash2 = new HashMap<String, String>();
-//        hash2.put("title", session.getSubmission().getChildren().get(1).getTitle());
-//        hash2.put("body", session.getSubmission().getChildren().get(1).getBody());
-//        submissionChildren.add(hash1);
-//        submissionChildren.add(hash2);
-//        String userName = session.getUser().getUserName();
-//
-//        model.addAttribute("title", submissionTitle);
-//        model.addAttribute("user", userName);
-//        model.addAttribute("children", submissionChildren);
-//
-//        return "home";
-//    }
+    @PostMapping(value = "/signup")
+    public String signUp(@RequestParam Map<String, String> credentials, Model model) {
+        if(userRepository.findByUserName(credentials.get("username")) == null) {
+            userRepository.save(new User(credentials.get("username"), credentials.get("password"), credentials.get("role")));
+            session.setUser(userRepository.findByUserName(credentials.get("username")));
+        }
+
+        model.addAttribute("title", session.getSubmission().getTitle());
+        model.addAttribute("description", session.getSubmission().getBody());
+        model.addAttribute("user", session.getUser().getUserName());
+        model.addAttribute("children", submissionRepository.findByParentId(session.getSubmission().getId()));
+        return "home";
+    }
+
+    @PostMapping(value = "/submit")
+    public String submit(@RequestParam Map<String, String> submissionDetails, Model model) {
+        if(!session.getUser().getRole().equals("logged-out")) {
+            if(session.getSubmission().getTitle().equals("SpeakEasy")) {
+                submissionRepository.save(new Forum(session.getSubmission().getId(), session.getUser().getId(), submissionDetails.get("title"), submissionDetails.get("body")));
+            } else if(session.getSubmission().getClass().equals(Forum.class)) {
+                submissionRepository.save(new Post(session.getSubmission().getId(), session.getUser().getId(), submissionDetails.get("title"), submissionDetails.get("body")));
+            } else {
+                submissionRepository.save(new Comment(session.getSubmission().getId(), session.getUser().getId(), submissionDetails.get("body")));
+            }
+        }
+
+        model.addAttribute("title", session.getSubmission().getTitle());
+        model.addAttribute("description", session.getSubmission().getBody());
+        model.addAttribute("user", session.getUser().getUserName());
+        model.addAttribute("children", submissionRepository.findByParentId(session.getSubmission().getId()));
+        return "home";
+    }
 
 }

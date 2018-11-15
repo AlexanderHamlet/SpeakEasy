@@ -1,10 +1,12 @@
 package hamlet.alexander.SpeakEasy.Submission;
 
+import org.bson.types.ObjectId;
+
 public class Comment extends Submission {
 
     private String body;
 
-    public Comment(int parentId, int posterId, String body) {
+    public Comment(ObjectId parentId, ObjectId posterId, String body) {
         super(parentId, posterId);
         this.body = body;
     }

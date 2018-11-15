@@ -1,23 +1,25 @@
 package hamlet.alexander.SpeakEasy.Submission;
 
+import org.bson.types.ObjectId;
+
 public class Post extends Submission {
 
-    private String title;
+    private String postTitle;
     private String body;
 
-    public Post(int parentId, int posterId, String title, String body) {
+    public Post(ObjectId parentId, ObjectId posterId, String postTitle, String body) {
         super(parentId, posterId);
-        this.title = title;
+        this.postTitle = postTitle;
         this.body = body;
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return postTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.postTitle = title;
     }
 
     @Override

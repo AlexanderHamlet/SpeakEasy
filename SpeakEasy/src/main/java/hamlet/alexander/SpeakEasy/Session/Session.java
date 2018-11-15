@@ -18,7 +18,7 @@ public class Session {
     private Menu menu;
 
     public Session() {
-        this.user = new User("Anon", "logged-out");
+        this.user = new User("Anon", "","logged-out");
     }
 
     public User getUser() {

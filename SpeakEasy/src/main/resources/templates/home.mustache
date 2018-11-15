@@ -10,10 +10,15 @@
             <p> {{ description }} </p>
         </div>
         <div id="container">
-            <h2>User: {{ user }}</h2>
+            <h2>Current user: {{ user }}</h2>
+            <h2>Current conversations:</h2>
             {{ #children }}
                 <p>{{ title }} : {{ body }}</p>
             {{ /children }}
+        </div>
+        <div id="footer">
+            {{> login }}
+            {{> submit }}
         </div>
     </body>
 </html>

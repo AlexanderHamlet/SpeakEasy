@@ -3,6 +3,7 @@ package hamlet.alexander.SpeakEasy.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,23 +11,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
     @Id
-    private int id;
+    private ObjectId id;
 
     private String userName;
+    private String password;
     private String role;
-    private List<Integer> submissions;
-
-    public User(String userName, String role) {
+    public User(String userName, String password, String role) {
         this.userName = userName;
+        this.password = password;
         this.role = role;
-        this.submissions = new ArrayList<Integer>();
     }
 
-    public int getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -38,19 +38,19 @@ public class User {
         this.userName = userName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public List<Integer> getSubmissions() {
-        return submissions;
-    }
-
-    public void setSubmissions(List<Integer> submissions) {
-        this.submissions = submissions;
     }
 }
