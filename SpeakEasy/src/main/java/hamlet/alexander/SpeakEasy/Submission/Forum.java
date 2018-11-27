@@ -2,7 +2,7 @@ package hamlet.alexander.SpeakEasy.Submission;
 
 import org.bson.types.ObjectId;
 
-public class Forum extends Submission {
+public class Forum extends Discussion {
 
     private ObjectId moderatorId;
     private String forumTitle;

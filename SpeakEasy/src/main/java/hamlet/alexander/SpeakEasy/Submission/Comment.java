@@ -1,14 +1,31 @@
 package hamlet.alexander.SpeakEasy.Submission;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
-public class Comment extends Submission {
+public class Comment implements Submission {
 
+    @Id
+    private ObjectId id;
+
+    private ObjectId parentId;
+    private ObjectId posterId;
     private String body;
 
     public Comment(ObjectId parentId, ObjectId posterId, String body) {
-        super(parentId, posterId);
         this.body = body;
+    }
+
+    public ObjectId getId() {
+        return this.id;
+    }
+
+    public ObjectId getParentId() {
+        return this.parentId;
+    }
+
+    public ObjectId getPosterId() {
+        return this.posterId;
     }
 
     public String getBody() {
@@ -23,4 +40,7 @@ public class Comment extends Submission {
     public String getTitle() {
         return "";
     }
+
+    public void setTitle(String title) {}
+
 }

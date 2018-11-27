@@ -12,5 +12,5 @@ public interface SubmissionRepository extends MongoRepository<Submission, Intege
     public Submission findById(ObjectId id);
 
     public List<Submission> findByParentId(ObjectId parentId);
-    public List<Submission> findByPosterId(int posterId);
+    public List<Submission> findByPosterId(ObjectId posterId);
 }

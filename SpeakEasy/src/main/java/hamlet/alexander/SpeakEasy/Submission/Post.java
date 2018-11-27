@@ -2,7 +2,7 @@ package hamlet.alexander.SpeakEasy.Submission;
 
 import org.bson.types.ObjectId;
 
-public class Post extends Submission {
+public class Post extends Discussion {
 
     private String postTitle;
     private String body;
