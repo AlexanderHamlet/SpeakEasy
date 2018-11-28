@@ -7,10 +7,12 @@ import java.util.List;
 
 public interface SubmissionRepository extends MongoRepository<Submission, Integer> {
 
-    public Forum findByForumTitle(String title);
-    public Post findByPostTitle(String title);
-    public Submission findById(ObjectId id);
+    Forum findByForumTitle(String title);
+    Post findByPostTitle(String title);
+    Submission findById(ObjectId id);
 
-    public List<Submission> findByParentId(ObjectId parentId);
-    public List<Submission> findByPosterId(ObjectId posterId);
+    List<Submission> findByParentId(ObjectId parentId);
+    List<Submission> findByPosterId(ObjectId posterId);
+
+    void removeById(ObjectId id);
 }

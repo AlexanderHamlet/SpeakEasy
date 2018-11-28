@@ -1,7 +1,5 @@
 package hamlet.alexander.SpeakEasy.Submission;
 
-import hamlet.alexander.SpeakEasy.Submission.SubmissionRepository;
-
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,32 +12,42 @@ public class SubmissionService {
     @Autowired
     private SubmissionRepository submissionRepository;
 
+    private static final String ORIGINAL = " ";
+    private static final String ENCODED_DELIMETER = "_";
+
     public Forum findByForumTitle(String title) {
-        title = title.replace(" ", "_");
-        return submissionRepository.findByForumTitle(title);
+        Forum forum = submissionRepository.findByForumTitle(title.replace(ORIGINAL, ENCODED_DELIMETER));
+        return forum;
     }
 
     public Post findByPostTitle(String title) {
-        title = title.replace(" ", "_");
-        return submissionRepository.findByPostTitle(title);
+        Post post = submissionRepository.findByPostTitle(title.replace(ORIGINAL, ENCODED_DELIMETER));
+        return post;
     }
 
     public List<Submission> findByParentId(ObjectId parentId) {
-        return submissionRepository.findByParentId(parentId);
+        List<Submission> children = submissionRepository.findByParentId(parentId);
+
+        return children;
     }
 
     public List<Submission> findByPosterId(ObjectId posterId) {
-        return submissionRepository.findByPosterId(posterId);
+        List<Submission> children = submissionRepository.findByPosterId(posterId);
+
+        return children;
     }
 
     public Submission findById(ObjectId id) {
-        return submissionRepository.findById(id);
+        Submission submission = submissionRepository.findById(id);
+        return submission;
     }
 
     public void save(Submission submission) {
-        String title = submission.getTitle();
-        title = title.replace(" ", "_");
-        submission.setTitle(title);
+        submission.setTitle(submission.getTitle().replace(ORIGINAL, ENCODED_DELIMETER));
         submissionRepository.save(submission);
+    }
+
+    public void delete(ObjectId id) {
+        submissionRepository.delete(submissionRepository.findById(id));
     }
 }
